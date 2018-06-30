@@ -9,7 +9,7 @@
     {
         /// <summary>
         /// Finds the number, that is consist only of digits of the passed number
-        /// and is the smallest of larger nubers.
+        /// and is the smallest of larger numbers.
         /// </summary>
         /// <param name="number">
         /// The number.
@@ -95,16 +95,16 @@
         }
 
         /// <summary>
-        /// Method responsible for choosing pivot element and partitioning array.
+        /// Method for sorting substring.
         /// </summary>
-        /// <param name="array">
-        /// Array that needs to be sorted.
+        /// <param name="strNumber">
+        /// String which substring that needs to be sorted.
         /// </param>
         /// <param name="left">
-        /// Left index of sub-array.
+        /// Left index of sub-string.
         /// </param>
         /// <param name="right">
-        /// Right index of sub-array.
+        /// Right index of sub-string.
         /// </param>
         private static void QsortSubstring(ref string strNumber, int left, int right)
         {
@@ -125,14 +125,14 @@
         /// the pivot are in the right side of it and elements that are lower that the
         /// pivot are in the left side of it.
         /// </summary>
-        /// <param name="array">
-        /// Array that needs to be sorted.
+        /// <param name="strNumber">
+        /// String which substring that needs to be sorted.
         /// </param>
         /// <param name="left">
-        /// Left index of sub-array.
+        /// Left index of sub-string.
         /// </param>
         /// <param name="right">
-        /// Right index of sub-array.
+        /// Right index of sub-string.
         /// </param>
         /// <param name="pivotIndex">
         /// The pivot element index.
@@ -164,7 +164,7 @@
         /// Swaps two elements in passed string.
         /// </summary>
         /// <param name="str">
-        /// String that neesd tpp be modified.
+        /// String that needs to be modified.
         /// </param>
         /// <param name="indexOne">
         /// Index of the first element.
@@ -196,7 +196,7 @@
         }
 
         /// <summary>
-        /// Throw for nonpositive number.
+        /// Throw for non-positive number.
         /// </summary>
         /// <param name="number">
         /// Number that needs to be validated.
@@ -219,7 +219,7 @@
         /// Number as string.
         /// </param>
         /// <exception cref="OverflowException">
-        /// Thrown if number doesnt fit in Int32 value.
+        /// Thrown if number doesn't fit in Int32 value.
         /// </exception>
         private static void ThrowForIntegerOverflow(string strNumber)
         {
