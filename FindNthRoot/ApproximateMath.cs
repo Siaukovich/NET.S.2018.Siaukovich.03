@@ -19,6 +19,12 @@
         /// <param name="epsilon">
         /// Calculation accuracy.
         /// </param>
+        /// <exception cref="ArgumentException">
+        /// Thrown when number &lt; 0 and root power is even. 
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown in two cases: when epsilon &lt; 0 or root power &lt; 0.
+        /// </exception>
         /// <returns>
         /// The <see cref="double"/>.
         /// Returns the Nth root of given value calculated with given accuracy.
@@ -27,19 +33,15 @@
         {
             ThrowForInvalidParameters(number, rootPower, epsilon);
 
-            double currentApproximation = number;
-            double previousApproximation;
-            while (true)
+            double previousApproximation = number;
+            double currentApproximation = GetNextApproximation(number, rootPower, previousApproximation);
+            while (Math.Abs(currentApproximation - previousApproximation) > epsilon)
             {
                 previousApproximation = currentApproximation;
                 currentApproximation = GetNextApproximation(number, rootPower, currentApproximation);
-
-                if (Math.Abs(currentApproximation - previousApproximation) < epsilon)
-                {
-                    return currentApproximation;
-                }
-
             }
+
+            return currentApproximation;
         }
 
         /// <summary>
@@ -79,7 +81,7 @@
         /// Given accuracy.
         /// </param>
         /// <exception cref="ArgumentException">
-        /// Thrown when number &lt; 0 root power is even. 
+        /// Thrown when number &lt; 0 and root power is even. 
         /// </exception>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown in two cases: when epsilon &lt; 0 or root power &lt; 0.
@@ -91,7 +93,7 @@
                 throw new ArgumentException("Impossible to calculate Nth root of negative value if N is even.");
             }
 
-            if (epsilon < 0)
+            if (epsilon <= 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(epsilon), "Accuracy can not be less than 0.");
             }
