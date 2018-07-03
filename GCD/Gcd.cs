@@ -90,7 +90,7 @@
         /// </returns>
         public static int Euclid(int first, int second, int third, params int[] numbers)
         {
-            ThrowForInvalidParameters(first, second, numbers);
+            ThrowForInvalidParameters(first, second, third, numbers);
 
             int gcd = Euclid(first, second, third);
 
@@ -352,7 +352,7 @@
         /// </returns>
         public static int Binary(int first, int second, int third)
         {
-            ThrowForInvalidParameters(first, second);
+            ThrowForInvalidParameters(first, second, third);
 
             // Using property: gcd(a, b, c) = gcd(gcd(a, b), c).
             int gcd = BinaryGcd(first, second);
@@ -386,7 +386,7 @@
         /// </returns>
         public static int Binary(int first, int second, int third, params int[] numbers)
         {
-            ThrowForInvalidParameters(first, second, numbers);
+            ThrowForInvalidParameters(first, second, third, numbers);
 
             int gcd = Binary(first, second, third);
 
@@ -728,43 +728,6 @@
         /// <param name="second">
         /// Second number.
         /// </param>
-        /// <param name="numbers">
-        /// Other numbers.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown if passed params argument is null.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// Thrown if all parameters are equal to zero.
-        /// </exception>
-        private static void ThrowForInvalidParameters(int first, int second, int[] numbers)
-        {
-            if (numbers == null)
-            {
-                throw new ArgumentNullException(nameof(numbers));
-            }
-
-            if (AllParametersAreEqualToZero())
-            {
-                throw new ArgumentException("Cannot calculate GCD when all parameters are 0.");
-            }
-
-            bool AllParametersAreEqualToZero()
-            {
-                return first == 0 && second == 0 && Array.TrueForAll(numbers, v => v == 0);
-            }
-        }
-
-        /// <summary>
-        /// Checks input parameters and 
-        /// throws exceptions if they are not valid.
-        /// </summary>
-        /// <param name="first">
-        /// First number.
-        /// </param>
-        /// <param name="second">
-        /// Second number.
-        /// </param>
         /// <exception cref="ArgumentException">
         /// Thrown if both parameters are zeros.
         /// </exception>
@@ -792,6 +755,41 @@
         private static void ThrowForInvalidParameters(int first, int second, int third)
         {
             if (first == 0 && second == 0 && third == 0)
+            {
+                throw new ArgumentException("Cannot calculate GCD of three zeros.");
+            }
+        }
+
+        /// <summary>
+        /// Checks input parameters and throws 
+        /// exceptions if they are all equal to zero.
+        /// </summary>
+        /// <param name="first">
+        /// First number.
+        /// </param>
+        /// <param name="second">
+        /// Second number.
+        /// </param>
+        /// <param name="third">
+        /// Third number.
+        /// </param>
+        /// <param name="numbers">
+        /// The numbers.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if numbers parameter is null.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown if all parameters are zeros.
+        /// </exception>
+        private static void ThrowForInvalidParameters(int first, int second, int third, int[] numbers)
+        {
+            if (numbers == null)
+            {
+                throw new ArgumentNullException(nameof(numbers));
+            }
+
+            if (first == 0 && second == 0 && third == 0 && Array.TrueForAll(numbers, v => v == 0))
             {
                 throw new ArgumentException("Cannot calculate GCD of three zeros.");
             }
