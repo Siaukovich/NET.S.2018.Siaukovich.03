@@ -1,6 +1,7 @@
 ﻿namespace GCD
 {
     using System;
+    using System.Diagnostics;
     using System.Security.Policy;
 
     /// <summary>
@@ -23,8 +24,38 @@
         /// For additional numbers.
         /// </param>
         /// <exception cref="ArgumentException">
+        /// Thrown if passed parameters contain two zero values.
         /// </exception>
-        /// Thrown if passed parameters contains two zero values.
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if passed params argument is null.
+        /// </exception>
+        /// <returns>
+        /// The <see cref="(int gcd, long elapsedMillisecond)"/>.
+        /// Tuple which first element is GCD of passed parameters, 
+        /// second element is time taken by calculations in milliseconds.
+        /// </returns>
+        public static (int gcd, long elapsedMillisecond) TimedEuclid(int first, int second, params int[] numbers)
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+            int answer = Euclid(first, second, numbers);
+            return (answer, sw.ElapsedMilliseconds);
+        }
+
+        /// <summary>
+        /// Euclidean algorithm for finding greatest common divisor of two or more numbers.
+        /// </summary>
+        /// <param name="first">
+        /// First number.
+        /// </param>
+        /// <param name="second">
+        /// Second number.
+        /// </param>
+        /// <param name="numbers">
+        /// For additional numbers.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// Thrown if passed parameters contain two zero values.
+        /// </exception>
         /// <exception cref="ArgumentNullException">
         /// Thrown if passed params argument is null.
         /// </exception>
