@@ -10,6 +10,8 @@
     {
         #region Public methods
 
+        #region Euclidean Algorithm
+
         /// <summary>
         /// Euclidean algorithm for finding greatest common divisor of two numbers.
         /// </summary>
@@ -195,6 +197,195 @@
 
         #endregion
 
+        #region Binary Algorithm
+
+        /// <summary>
+        /// Binary algorithm for finding greatest common divisor of two numbers.
+        /// </summary>
+        /// <param name="first">
+        /// First number.
+        /// </param>
+        /// <param name="second">
+        /// Second number.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// Thrown if both passed parameters are zeros.
+        /// </exception>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// GCD of passed numbers.
+        /// </returns>
+        public static int Binary(int first, int second)
+        {
+            ThrowForInvalidParameters(first, second);
+
+            return BinaryGcd(first, second);
+        }
+
+        /// <summary>
+        /// Binary algorithm for finding greatest common divisor of two or more numbers.
+        /// </summary>
+        /// <param name="first">
+        /// First number.
+        /// </param>
+        /// <param name="second">
+        /// Second number.
+        /// </param>
+        /// <param name="numbers">
+        /// For additional numbers.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// Thrown if passed parameters contain two zero values.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if passed params argument is null.
+        /// </exception>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// GCD of all passed numbers.
+        /// </returns>
+        public static int Binary(int first, int second, params int[] numbers)
+        {
+            ThrowForInvalidParameters(first, second, numbers);
+
+            int gcd = BinaryGcd(first, second);
+            foreach (int number in numbers)
+            {
+                // Using property: gcd(a, b, c) = gcd(gcd(a, b), c).
+                gcd = BinaryGcd(gcd, number);
+            }
+
+            return gcd;
+        }
+
+        /// <summary>
+        /// Binary algorithm for finding greatest common divisor of two numbers.
+        /// </summary>
+        /// <param name="first">
+        /// First number.
+        /// </param>
+        /// <param name="second">
+        /// Second number.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// Thrown if both passed parameters are zeros.
+        /// </exception>
+        /// <returns>
+        /// The <see cref="(int gcd, long elapsedMillisecond)"/>.
+        /// Tuple which first element is GCD of passed parameters, 
+        /// second element is time taken by calculations in milliseconds.
+        /// </returns>
+        public static (int gcd, long elapsedMillisecond) TimedBinary(int first, int second)
+        {
+            ThrowForInvalidParameters(first, second);
+
+            Stopwatch sw = Stopwatch.StartNew();
+            int answer = BinaryGcd(first, second);
+
+            return (answer, sw.ElapsedMilliseconds);
+        }
+
+        /// <summary>
+        /// Binary algorithm for finding greatest common divisor of two numbers.
+        /// </summary>
+        /// <param name="elapsedTime">
+        /// Time taken by calculations in milliseconds.
+        /// </param>
+        /// <param name="first">
+        /// First number.
+        /// </param>
+        /// <param name="second">
+        /// Second number.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// Thrown if both passed parameters are zeros.
+        /// </exception>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// GCD of two numbers.
+        /// </returns>
+        public static int TimedBinary(out long elapsedTime, int first, int second)
+        {
+            ThrowForInvalidParameters(first, second);
+
+            Stopwatch sw = Stopwatch.StartNew();
+            int answer = BinaryGcd(first, second);
+            elapsedTime = sw.ElapsedMilliseconds;
+
+            return answer;
+        }
+
+        /// <summary>
+        /// Binary algorithm for finding greatest common divisor of two or more numbers.
+        /// </summary>
+        /// <param name="first">
+        /// First number.
+        /// </param>
+        /// <param name="second">
+        /// Second number.
+        /// </param>
+        /// <param name="numbers">
+        /// For additional numbers.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// Thrown if passed parameters contain two zero values.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if passed params argument is null.
+        /// </exception>
+        /// <returns>
+        /// The <see cref="(int gcd, long elapsedMillisecond)"/>.
+        /// Tuple which first element is GCD of passed parameters, 
+        /// second element is time taken by calculations in milliseconds.
+        /// </returns>
+        public static (int gcd, long elapsedMillisecond) TimedBinary(int first, int second, params int[] numbers)
+        {
+            // No parameters validation because they are inside of Euclid method below.
+            Stopwatch sw = Stopwatch.StartNew();
+            int answer = Binary(first, second, numbers);
+
+            return (answer, sw.ElapsedMilliseconds);
+        }
+
+        /// <summary>
+        /// Binary algorithm for finding greatest common divisor of two or more numbers.
+        /// </summary>
+        /// <param name="elapsedTime">
+        /// Time taken by calculations in milliseconds.
+        /// </param>
+        /// <param name="first">
+        /// First number.
+        /// </param>
+        /// <param name="second">
+        /// Second number.
+        /// </param>
+        /// <param name="numbers">
+        /// For additional numbers.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// Thrown if passed parameters contain two zero values.
+        /// </exception>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if passed params argument is null.
+        /// </exception>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// GCD of two numbers.
+        /// </returns>
+        public static int TimedBinary(out long elapsedTime, int first, int second, params int[] numbers)
+        {
+            // No parameters validation because they are inside of Euclid method below.
+            Stopwatch sw = Stopwatch.StartNew();
+            int answer = Binary(first, second, numbers);
+            elapsedTime = sw.ElapsedMilliseconds;
+
+            return answer;
+        }
+
+        #endregion
+
+        #endregion
+
         #region Private methods
 
         /// <summary>
@@ -228,6 +419,71 @@
             }
 
             return a;
+        }
+
+        /// <summary>
+        /// Binary algorithm for finding GCD of two numbers.
+        /// </summary>
+        /// <param name="a">
+        /// First number.
+        /// </param>
+        /// <param name="b">
+        /// Second number.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// GCD of two passed numbers.
+        /// </returns>
+        private static int BinaryGcd(int a, int b)
+        {
+            a = Math.Abs(a);
+            b = Math.Abs(b);
+
+            if (a < b)
+            {
+                Swap(ref a, ref b);
+            }
+
+            int shift;
+
+            if (a == 0)
+            {
+                return b;
+            }
+
+            if (b == 0)
+            {
+                return a;
+            }
+
+            for (shift = 0; ((a | b) & 1) == 0; shift++)
+            {
+                a >>= 1;
+                b >>= 1;
+            }
+
+            while ((a & 1) == 0)
+            {
+                a >>= 1;
+            }
+
+            do
+            {
+                while ((b & 1) == 0)
+                {
+                    b >>= 1;
+                }
+
+                if (a > b)
+                {
+                    Swap(ref a, ref b);
+                }
+
+                b -= a;
+            }
+            while (b != 0);
+
+            return a << shift;
         }
 
         /// <summary>
