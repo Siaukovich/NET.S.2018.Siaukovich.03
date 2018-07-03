@@ -43,14 +43,36 @@
         public int Binary_MultipleNonZeroNumbersInput_ValidResult(int a, int b, params int[] numbers) =>
             Gcd.Binary(a, b, numbers);
 
+        [TestCase(0, 45, -75, ExpectedResult = 15)]
+        [TestCase(8, 16, 0, 0, ExpectedResult = 8)]
+        [TestCase(0, 0, 5, 10, ExpectedResult = 5)]
+        [TestCase(0, 0, 5, ExpectedResult = 5)]
+        public int Euclid_InputWithZeros_ValidResult(int a, int b, params int[] numbers) =>
+            Gcd.Euclid(a, b, numbers);
+
+        [TestCase(0, 45, -75, ExpectedResult = 15)]
+        [TestCase(8, 16, 0, 0, ExpectedResult = 8)]
+        [TestCase(0, 0, 5, 10, ExpectedResult = 5)]
+        [TestCase(0, 0, 5, ExpectedResult = 5)]
+        public int Binary_InputWithZeros_ValidResult(int a, int b, params int[] numbers) =>
+            Gcd.Binary(a, b, numbers);
+
         [TestCase(0, 0)]
-        [TestCase(50, 110, 20, 0, 30, 0)]
-        [TestCase(0, 110, 20, 0, 30, 10)]
-        public void Euclid_TwoZeros_ThrowsArgumentException(int a, int b, params int[] numbers) =>
+        [TestCase(0, 0, 0, 0, 0, 0)]
+        public void Euclid_AllZeros_ThrowsArgumentException(int a, int b, params int[] numbers) =>
             Assert.Throws<ArgumentException>(() => Gcd.Euclid(a, b, numbers));
+
+        [TestCase(0, 0)]
+        [TestCase(0, 0, 0, 0, 0, 0)]
+        public void Binary_AllZeros_ThrowsArgumentException(int a, int b, params int[] numbers) =>
+            Assert.Throws<ArgumentException>(() => Gcd.Binary(a, b, numbers));
 
         [Test]
         public void Euclid_NumbersNull_ThrowsArgumentNullException() =>
-            Assert.Throws<ArgumentException>(() => Gcd.Euclid(0, 0, null));
+            Assert.Throws<ArgumentNullException>(() => Gcd.Euclid(10, 20, null));
+
+        [Test]
+        public void Binary_NumbersNull_ThrowsArgumentNullException() =>
+            Assert.Throws<ArgumentNullException>(() => Gcd.Binary(10, 20, null));
     }
 }
