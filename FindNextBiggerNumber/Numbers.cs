@@ -1,6 +1,7 @@
 ﻿namespace Numbers
 {
     using System;
+    using System.Diagnostics;
 
     /// <summary>
     /// Class with method to find next bigger number.
@@ -15,11 +16,19 @@
         /// The number.
         /// </param>
         /// <returns>
-        /// The <see cref="int"/>.
-        /// Next bigger number that consists of digits of the passed numbers.
+        /// The <see cref="(int answer, long elapsedMilliseconds)"/>.
+        /// Returns a tuple which contains the answer and the time that was taken to calculate it.
         /// </returns>
-        public static int FindNextBiggerNumber(int number)
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown if number is less or equal to zero.
+        /// </exception>
+        /// <exception cref="OverflowException">
+        /// Thrown if number doesn't fit in Int32 value.
+        /// </exception>
+        public static (int answer, long elapsedMilliseconds) FindNextBiggerNumber(int number)
         {
+            Stopwatch sw = Stopwatch.StartNew();
+            
             ThrowForNonpositiveNumber(number);
 
             string strNumber = number.ToString();
@@ -27,7 +36,8 @@
             int index = GetBreakIndex(strNumber);
             if (index == -1)
             {
-                return -1;
+                sw.Stop();
+                return (-1, sw.ElapsedMilliseconds);
             }
 
             char leftest = strNumber[index];
@@ -37,7 +47,7 @@
 
             ThrowForIntegerOverflow(strNumber);
 
-            return int.Parse(strNumber);
+            return (int.Parse(strNumber), sw.ElapsedMilliseconds);
         }
 
         /// <summary>

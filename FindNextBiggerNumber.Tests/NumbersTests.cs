@@ -21,14 +21,14 @@
         [TestCase(6345632, ExpectedResult = 6346235)]
         [TestCase(2543, ExpectedResult = 3245)]
         [TestCase(1000010, ExpectedResult = 1000100)]
-        public int FindNextBiggerNumber_ValidTests(int number) => Numbers.FindNextBiggerNumber(number);
+        public int FindNextBiggerNumber_ValidTests(int number) => Numbers.FindNextBiggerNumber(number).answer;
 
 
         [TestCase(10, ExpectedResult = -1)]
         [TestCase(10000, ExpectedResult = -1)]
         [TestCase(111111, ExpectedResult = -1)]
         [TestCase(20, ExpectedResult = -1)]
-        public int FindNextBiggerNumber_ValidInput_ReturnsMinusOne(int number) => Numbers.FindNextBiggerNumber(number);
+        public int FindNextBiggerNumber_ValidInput_ReturnsMinusOne(int number) => Numbers.FindNextBiggerNumber(number).answer;
 
 
         [TestCase(-1)]
