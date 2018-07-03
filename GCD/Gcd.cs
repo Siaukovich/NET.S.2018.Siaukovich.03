@@ -21,11 +21,11 @@
         /// <param name="second">
         /// Second number.
         /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
         /// <exception cref="ArgumentException">
         /// Thrown if both passed parameters are zeros.
         /// </exception>
-        /// <returns>
-        /// The <see cref="int"/>.
         /// GCD of passed numbers.
         /// </returns>
         public static int Euclid(int first, int second)
@@ -105,7 +105,7 @@
         /// For additional numbers.
         /// </param>
         /// <exception cref="ArgumentException">
-        /// Thrown if passed parameters contain two zero values.
+        /// Thrown if passed parameters are all equal to zero.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// Thrown if passed params argument is null.
@@ -119,10 +119,14 @@
             ThrowForInvalidParameters(first, second, numbers);
 
             int gcd = EuclidGcd(first, second);
+
+            // Using property: gcd(a, b, c) = gcd(gcd(a, b), c).
             foreach (int number in numbers)
             {
-                // Using property: gcd(a, b, c) = gcd(gcd(a, b), c).
-                gcd = EuclidGcd(gcd, number);
+                if (number != 0)
+                {
+                    gcd = EuclidGcd(gcd, number);
+                }
             }
 
             return gcd;
@@ -141,7 +145,7 @@
         /// For additional numbers.
         /// </param>
         /// <exception cref="ArgumentException">
-        /// Thrown if passed parameters contain two zero values.
+        /// Thrown if all passed parameters are zeros.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// Thrown if passed params argument is null.
@@ -176,7 +180,7 @@
         /// For additional numbers.
         /// </param>
         /// <exception cref="ArgumentException">
-        /// Thrown if passed parameters contain two zero values.
+        /// Thrown if all passed parameters are zeros.
         /// </exception>
         /// <exception cref="ArgumentNullException">
         /// Thrown if passed params argument is null.
@@ -249,10 +253,14 @@
             ThrowForInvalidParameters(first, second, numbers);
 
             int gcd = BinaryGcd(first, second);
+
+            // Using property: gcd(a, b, c) = gcd(gcd(a, b), c).
             foreach (int number in numbers)
             {
-                // Using property: gcd(a, b, c) = gcd(gcd(a, b), c).
-                gcd = BinaryGcd(gcd, number);
+                if (number != 0)
+                {
+                    gcd = BinaryGcd(gcd, number);
+                }
             }
 
             return gcd;
@@ -515,56 +523,27 @@
         /// <param name="numbers">
         /// Other numbers.
         /// </param>
-        /// <exception cref="ArgumentException">
-        /// Thrown if passed parameters contains two zero values.
-        /// </exception>
         /// <exception cref="ArgumentNullException">
         /// Thrown if passed params argument is null.
         /// </exception>
+        /// <exception cref="ArgumentException">
+        /// Thrown if all parameters are equal to zero.
+        /// </exception>
         private static void ThrowForInvalidParameters(int first, int second, int[] numbers)
         {
-            if (first == 0 && second == 0)
-            {
-                throw new ArgumentException("Cannot calculate gcd of two zeros.");
-            }
-
             if (numbers == null)
             {
                 throw new ArgumentNullException(nameof(numbers));
             }
 
-            if (ParametersContainTwoZeros())
+            if (AllParametersAreEqualToZero())
             {
-                throw new ArgumentException("Cannot calculate gcd of two zeros.");
+                throw new ArgumentException("Cannot calculate GCD when all parameters are 0.");
             }
 
-            bool ParametersContainTwoZeros()
+            bool AllParametersAreEqualToZero()
             {
-                int zeroCount = 0;
-
-                // Because we have already checked 
-                // condition (first == 0 && second == 0) before, 
-                // only one of these parameters can be equal to zero.
-                if (first == 0 || second == 0)
-                {
-                    zeroCount++;
-                }
-
-                foreach (int number in numbers)
-                {
-                    if (number != 0)
-                    {
-                        continue;
-                    }
-
-                    zeroCount++;
-                    if (zeroCount == 2)
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
+                return first == 0 && second == 0 && Array.TrueForAll(numbers, v => v == 0);
             }
         }
 
@@ -585,7 +564,7 @@
         {
             if (first == 0 && second == 0)
             {
-                throw new ArgumentException("Cannot calculate gcd of two zeros.");
+                throw new ArgumentException("Cannot calculate GCD of two zeros.");
             }
         }
 
