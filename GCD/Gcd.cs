@@ -4,7 +4,7 @@
     using System.Diagnostics;
 
     /// <summary>
-    /// Class that contains methods for finding gcd of two or more numbers.
+    /// Class that contains methods for finding Greatest Common Divisor of two or more numbers.
     /// </summary>
     public static class Gcd
     {
@@ -32,7 +32,7 @@
         {
             ThrowForInvalidParameters(first, second);
 
-            return EuclidGcd(first, second);
+            return GetGcd(EuclidGcd, first, second);
         }
 
         /// <summary>
@@ -58,25 +58,14 @@
         {
             ThrowForInvalidParameters(first, second, third);
 
-            // Using property: gcd(a, b, c) = gcd(gcd(a, b), c).
-            int gcd = EuclidGcd(first, second);
-            return EuclidGcd(gcd, third);
+            return GetGcd(EuclidGcd, first, second, third);
         }
 
         /// <summary>
-        /// Euclidean algorithm for finding greatest common divisor of three or more numbers.
+        /// Euclidean algorithm for finding greatest common divisor of many numbers.
         /// </summary>
-        /// <param name="first">
-        /// First number.
-        /// </param>
-        /// <param name="second">
-        /// Second number.
-        /// </param>
-        /// <param name="third">
-        /// Third number.
-        /// </param>
         /// <param name="numbers">
-        /// For additional numbers.
+        /// Numbers which GCD needs to be found.
         /// </param>
         /// <exception cref="ArgumentException">
         /// Thrown if passed parameters are all equal to zero.
@@ -88,22 +77,11 @@
         /// The <see cref="int"/>.
         /// GCD of all passed numbers.
         /// </returns>
-        public static int Euclid(int first, int second, int third, params int[] numbers)
+        public static int Euclid(params int[] numbers)
         {
-            ThrowForInvalidParameters(first, second, third, numbers);
+            ThrowForInvalidParameters(numbers);
 
-            int gcd = Euclid(first, second, third);
-
-            // Using property: gcd(a, b, c) = gcd(gcd(a, b), c).
-            foreach (int number in numbers)
-            {
-                if (number != 0)
-                {
-                    gcd = EuclidGcd(gcd, number);
-                }
-            }
-
-            return gcd;
+            return GetGcd(EuclidGcd, numbers);
         }
 
         /// <summary>
@@ -125,9 +103,9 @@
         /// </returns>
         public static (int gcd, long elapsedMillisecond) TimedEuclid(int first, int second)
         {
-            ThrowForInvalidParameters(first, second);
-
+            // No parameters validation because they are inside of Euclid method below.
             Stopwatch sw = Stopwatch.StartNew();
+
             int answer = EuclidGcd(first, second);
 
             return (answer, sw.ElapsedMilliseconds);
@@ -155,11 +133,9 @@
         /// </returns>
         public static (int gcd, long elapsedMillisecond) TimedEuclid(int first, int second, int third)
         {
-            ThrowForInvalidParameters(first, second);
-
+            // No parameters validation because they are inside of Euclid method below.
             Stopwatch sw = Stopwatch.StartNew();
 
-            // Using property: gcd(a, b, c) = gcd(gcd(a, b), c).
             int gcd = Euclid(first, second, third);
 
             return (gcd, sw.ElapsedMilliseconds);
@@ -168,15 +144,6 @@
         /// <summary>
         /// Euclidean algorithm for finding greatest common divisor of three or more numbers.
         /// </summary>
-        /// <param name="first">
-        /// First number.
-        /// </param>
-        /// <param name="second">
-        /// Second number.
-        /// </param>
-        /// <param name="third">
-        /// Third number.
-        /// </param>
         /// <param name="numbers">
         /// For additional numbers.
         /// </param>
@@ -191,11 +158,12 @@
         /// Tuple which first element is GCD of passed parameters, 
         /// second element is time taken by calculations in milliseconds.
         /// </returns>
-        public static (int gcd, long elapsedMillisecond) TimedEuclid(int first, int second, int third, params int[] numbers)
+        public static (int gcd, long elapsedMillisecond) TimedEuclid(params int[] numbers)
         {
             // No parameters validation because they are inside of Euclid method below.
             Stopwatch sw = Stopwatch.StartNew();
-            int answer = Euclid(first, second, third, numbers);
+
+            int answer = Euclid(numbers);
 
             return (answer, sw.ElapsedMilliseconds);
         }
@@ -221,10 +189,11 @@
         /// </returns>
         public static int TimedEuclid(out long elapsedTime, int first, int second)
         {
-            ThrowForInvalidParameters(first, second);
-
+            // No parameters validation because they are inside of Euclid method below.
             Stopwatch sw = Stopwatch.StartNew();
+
             int answer = EuclidGcd(first, second);
+
             elapsedTime = sw.ElapsedMilliseconds;
 
             return answer;
@@ -254,11 +223,9 @@
         /// </returns>
         public static int TimedEuclid(out long elapsedTime, int first, int second, int third)
         {
-            ThrowForInvalidParameters(first, second);
-
+            // No parameters validation because they are inside of Euclid method below.
             Stopwatch sw = Stopwatch.StartNew();
 
-            // Using property: gcd(a, b, c) = gcd(gcd(a, b), c).
             int gcd = Euclid(first, second, third);
 
             elapsedTime = sw.ElapsedMilliseconds;
@@ -278,9 +245,6 @@
         /// <param name="second">
         /// Second number.
         /// </param>
-        /// <param name="third">
-        /// Third number.
-        /// </param>
         /// <param name="numbers">
         /// For additional numbers.
         /// </param>
@@ -294,11 +258,13 @@
         /// The <see cref="int"/>.
         /// GCD of two numbers.
         /// </returns>
-        public static int TimedEuclid(out long elapsedTime, int first, int second, int third, params int[] numbers)
+        public static int TimedEuclid(out long elapsedTime,  params int[] numbers)
         {
             // No parameters validation because they are inside of Euclid method below.
             Stopwatch sw = Stopwatch.StartNew();
-            int answer = Euclid(first, second, third, numbers);
+
+            int answer = Euclid(numbers);
+
             elapsedTime = sw.ElapsedMilliseconds;
 
             return answer;
@@ -328,7 +294,7 @@
         {
             ThrowForInvalidParameters(first, second);
 
-            return BinaryGcd(first, second);
+            return GetGcd(BinaryGcd, first, second);
         }
 
         /// <summary>
@@ -354,23 +320,12 @@
         {
             ThrowForInvalidParameters(first, second, third);
 
-            // Using property: gcd(a, b, c) = gcd(gcd(a, b), c).
-            int gcd = BinaryGcd(first, second);
-            return BinaryGcd(gcd, third);
+            return GetGcd(BinaryGcd, first, second, third);
         }
 
         /// <summary>
         /// Binary algorithm for finding greatest common divisor of three or more numbers.
         /// </summary>
-        /// <param name="first">
-        /// First number.
-        /// </param>
-        /// <param name="second">
-        /// Second number.
-        /// </param>
-        /// <param name="third">
-        /// Third number.
-        /// </param>
         /// <param name="numbers">
         /// For additional numbers.
         /// </param>
@@ -384,22 +339,11 @@
         /// The <see cref="int"/>.
         /// GCD of all passed numbers.
         /// </returns>
-        public static int Binary(int first, int second, int third, params int[] numbers)
+        public static int Binary(params int[] numbers)
         {
-            ThrowForInvalidParameters(first, second, third, numbers);
+            ThrowForInvalidParameters(numbers);
 
-            int gcd = Binary(first, second, third);
-
-            // Using property: gcd(a, b, c) = gcd(gcd(a, b), c).
-            foreach (int number in numbers)
-            {
-                if (number != 0)
-                {
-                    gcd = BinaryGcd(gcd, number);
-                }
-            }
-
-            return gcd;
+            return GetGcd(BinaryGcd, numbers);
         }
 
         /// <summary>
@@ -421,8 +365,7 @@
         /// </returns>
         public static (int gcd, long elapsedMillisecond) TimedBinary(int first, int second)
         {
-            ThrowForInvalidParameters(first, second);
-
+            // No parameters validation because they are inside of Binary method below.
             Stopwatch sw = Stopwatch.StartNew();
             int answer = BinaryGcd(first, second);
 
@@ -451,11 +394,9 @@
         /// </returns>
         public static (int gcd, long elapsedMillisecond) TimedBinary(int first, int second, int third)
         {
-            ThrowForInvalidParameters(first, second);
-
+            // No parameters validation because they are inside of Binary method below.
             Stopwatch sw = Stopwatch.StartNew();
-            int gcd = BinaryGcd(first, second);
-            gcd = BinaryGcd(gcd, third);
+            int gcd = Binary(first, second, third);
 
             return (gcd, sw.ElapsedMilliseconds);
         }
@@ -463,15 +404,6 @@
         /// <summary>
         /// Binary algorithm for finding greatest common divisor of three or more numbers.
         /// </summary>
-        /// <param name="first">
-        /// First number.
-        /// </param>
-        /// <param name="second">
-        /// Second number.
-        /// </param>
-        /// <param name="third">
-        /// Third number.
-        /// </param>
         /// <param name="numbers">
         /// For additional numbers.
         /// </param>
@@ -486,11 +418,11 @@
         /// Tuple which first element is GCD of passed parameters, 
         /// second element is time taken by calculations in milliseconds.
         /// </returns>
-        public static (int gcd, long elapsedMillisecond) TimedBinary(int first, int second, int third, params int[] numbers)
+        public static (int gcd, long elapsedMillisecond) TimedBinary(params int[] numbers)
         {
-            // No parameters validation because they are inside of Euclid method below.
+            // No parameters validation because they are inside of Binary method below.
             Stopwatch sw = Stopwatch.StartNew();
-            int answer = Binary(first, second, third, numbers);
+            int answer = Binary(numbers);
 
             return (answer, sw.ElapsedMilliseconds);
         }
@@ -516,10 +448,10 @@
         /// </returns>
         public static int TimedBinary(out long elapsedTime, int first, int second)
         {
-            ThrowForInvalidParameters(first, second);
+            // No parameters validation because they are inside of Binary method below.
 
             Stopwatch sw = Stopwatch.StartNew();
-            int answer = BinaryGcd(first, second);
+            int answer = Binary(first, second);
             elapsedTime = sw.ElapsedMilliseconds;
 
             return answer;
@@ -549,8 +481,7 @@
         /// </returns>
         public static int TimedBinary(out long elapsedTime, int first, int second, int third)
         {
-            ThrowForInvalidParameters(first, second);
-
+            // No parameters validation because they are inside of Binary method below.
             Stopwatch sw = Stopwatch.StartNew();
 
             int gcd = Binary(first, second, third);
@@ -561,19 +492,10 @@
         }
 
         /// <summary>
-        /// Binary algorithm for finding greatest common divisor of three or more numbers.
+        /// Binary algorithm for finding greatest common divisor of many numbers.
         /// </summary>
         /// <param name="elapsedTime">
         /// Time taken by calculations in milliseconds.
-        /// </param>
-        /// <param name="first">
-        /// First number.
-        /// </param>
-        /// <param name="second">
-        /// Second number.
-        /// </param>
-        /// <param name="third">
-        /// Third number.
         /// </param>
         /// <param name="numbers">
         /// For additional numbers.
@@ -586,13 +508,13 @@
         /// </exception>
         /// <returns>
         /// The <see cref="int"/>.
-        /// GCD of two numbers.
+        /// GCD of all passed numbers.
         /// </returns>
-        public static int TimedBinary(out long elapsedTime, int first, int second, int third, params int[] numbers)
+        public static int TimedBinary(out long elapsedTime, params int[] numbers)
         {
             // No parameters validation because they are inside of Euclid method below.
             Stopwatch sw = Stopwatch.StartNew();
-            int gcd = Binary(first, second, third, numbers);
+            int gcd = Binary(numbers);
             elapsedTime = sw.ElapsedMilliseconds;
 
             return gcd;
@@ -603,6 +525,77 @@
         #endregion
 
         #region Private methods
+
+        /// <summary>
+        /// Calculates GCD of two numbers using provided algorithm.
+        /// </summary>
+        /// <param name="gcdAlgorithm">
+        /// Algorithm for calculating GCD of two numbers.
+        /// </param>
+        /// <param name="first">
+        /// First number.
+        /// </param>
+        /// <param name="second">
+        /// Second number.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// GCD of two numbers.
+        /// </returns>
+        private static int GetGcd(Func<int, int, int> gcdAlgorithm, int first, int second) =>
+            gcdAlgorithm(first, second);
+
+
+        /// <summary>
+        /// Calculates GCD of three numbers using provided algorithm.
+        /// </summary>
+        /// <param name="gcdAlgorithm">
+        /// Algorithm for calculating GCD of two numbers.
+        /// </param>
+        /// <param name="first">
+        /// First number.
+        /// </param>
+        /// <param name="second">
+        /// Second number.
+        /// </param>
+        /// <param name="third">
+        /// Third number.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// GCD of three numbers.
+        /// </returns>
+        private static int GetGcd(Func<int, int, int> gcdAlgorithm, int first, int second, int third)
+        {
+            // Using property: gcd(a, b, c) = gcd(gcd(a, b), c).
+            int gcd = gcdAlgorithm(first, second);
+            return gcdAlgorithm(gcd, third);
+        }
+
+        /// <summary>
+        /// Calculates GCD of all passed numbers using provided algorithm.
+        /// </summary>
+        /// <param name="gcdAlgorithm">
+        /// Algorithm for calculating GCD of two numbers.
+        /// </param>
+        /// <param name="values">
+        /// Values which GCD needs to be found.
+        /// </param>
+        /// <returns>
+        /// The <see cref="int"/>.
+        /// GCD of all passed numbers.
+        /// </returns>
+        private static int GetGcd(Func<int, int, int> gcdAlgorithm, params int[] values)
+        {
+            // Using property: gcd(a, b, c) = gcd(gcd(a, b), c).
+            int gcd = gcdAlgorithm(values[0], values[1]);
+            for (int i = 2; i < values.Length; i++)
+            {
+                gcd = gcdAlgorithm(gcd, values[i]);
+            }
+
+            return gcd;
+        }
 
         /// <summary>
         /// Euclidean algorithm for finding GCD of two numbers.
@@ -749,6 +742,9 @@
         /// <param name="second">
         /// Second number.
         /// </param>
+        /// <param name="third">
+        /// Third number.
+        /// </param>
         /// <exception cref="ArgumentException">
         /// Thrown if all parameters are zeros.
         /// </exception>
@@ -764,15 +760,6 @@
         /// Checks input parameters and throws 
         /// exceptions if they are all equal to zero.
         /// </summary>
-        /// <param name="first">
-        /// First number.
-        /// </param>
-        /// <param name="second">
-        /// Second number.
-        /// </param>
-        /// <param name="third">
-        /// Third number.
-        /// </param>
         /// <param name="numbers">
         /// The numbers.
         /// </param>
@@ -782,16 +769,16 @@
         /// <exception cref="ArgumentException">
         /// Thrown if all parameters are zeros.
         /// </exception>
-        private static void ThrowForInvalidParameters(int first, int second, int third, int[] numbers)
+        private static void ThrowForInvalidParameters(int[] numbers)
         {
             if (numbers == null)
             {
                 throw new ArgumentNullException(nameof(numbers));
             }
 
-            if (first == 0 && second == 0 && third == 0 && Array.TrueForAll(numbers, v => v == 0))
+            if (Array.TrueForAll(numbers, n => n == 0))
             {
-                throw new ArgumentException("Cannot calculate GCD of three zeros.");
+                throw new ArgumentException("Cannot calculate GCD of zeros.");
             }
         }
 
